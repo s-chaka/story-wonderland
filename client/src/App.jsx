@@ -1,7 +1,13 @@
-import React from 'react'
+
+import TestComponent from "./TestComponent";
+
 
 export default function App() {
   return (
-    <h1 className='text-green-500'>Story Wonderland</h1>
-  )
+    <div>
+      <h1 className='text-green-500'>Story Wonderland </h1>
+      <TestComponent />
+    </div>
+  );
 }
+

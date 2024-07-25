@@ -2,6 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import axios from 'axios';
+import path from 'path';
 dotenv.config();
 
 mongoose.connect(process.env.MONGO)
@@ -12,6 +13,8 @@ mongoose.connect(process.env.MONGO)
   console.log(err);
 }
 );
+
+const __dirname = path.resolve();
 
 const app = express();
 
@@ -30,3 +33,14 @@ if (import.meta.url == `file://${process.argv[1]}`) {
   );
 };
 
+
+app.get('/test', (req, res) => {
+  res.send('This is just a test!!');
+}
+);
+
+app.use(express.static(path.join(__dirname, 'client/dist')));
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'));
+});
