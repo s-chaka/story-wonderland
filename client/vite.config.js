@@ -1,11 +1,22 @@
 import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react-swc'
+import { configDefaults } from 'vitest/config'
+import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
       '/test': 'http://localhost:3000', 
+    },
+  },
+  test: {
+    // jest config here
+    reporters: ['verbose'],
+    environment: 'jsdom',
+    // globals: true,
+    setupFiles: ['./vitest.setup.js'],
+    coverage: {
+      exclude: [...configDefaults.coverage.exclude, 'src/main.jsx'],
     },
   },
 });
