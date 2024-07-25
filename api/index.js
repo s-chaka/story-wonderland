@@ -3,6 +3,9 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import axios from 'axios';
 import path from 'path';
+import userRouter from './routes/user.route.js';
+import authRouter from './routes/auth.route.js';
+
 dotenv.config();
 
 mongoose.connect(process.env.MONGO)
@@ -17,6 +20,8 @@ mongoose.connect(process.env.MONGO)
 const __dirname = path.resolve();
 
 const app = express();
+
+app.use(express.json());
 
 //example api
 export const fetchData = async () => {
@@ -34,13 +39,15 @@ if (import.meta.url == `file://${process.argv[1]}`) {
 };
 
 
-app.get('/test', (req, res) => {
-  res.send('This is just a test!!');
-}
-);
+app.use('/api/user', userRouter);
+app.use('/api/auth', authRouter);
 
+
+// serves static files from vite's build output.This line configures the application to serve static files (like HTML, CSS, and JavaScript) from the client/dist directory.
 app.use(express.static(path.join(__dirname, 'client/dist')));
 
+// catch-all route
+//This line defines a catch-all route handler. When any GET request is made that doesn't match a specific route defined earlier, the function serves the index.html file from the client/dist directory.
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'));
 });
