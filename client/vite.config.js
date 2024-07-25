@@ -2,9 +2,13 @@ import { defineConfig } from 'vite'
 import { configDefaults } from 'vitest/config'
 import react from '@vitejs/plugin-react'
 
-// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
+  server: {
+    proxy: {
+      '/test': 'http://localhost:3000', 
+    },
+  },
   test: {
     // jest config here
     reporters: ['verbose'],

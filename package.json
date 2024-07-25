@@ -9,6 +9,7 @@
     "start": "node api/index.js",
     "test:client": "cd client && npm test",
     "test:api": "cd api && npm test",
+    "build": "npm install && npm install --prefix client && npm run build --prefix client",
     "test": "npm-run-all test:client test:api"
   },
   "keywords": [],
