@@ -41,7 +41,7 @@ export default function SignUp() {
         onChange={handleChange} />
         <input type='text' placeholder='email' id='email' className='bg-slate-100 p-3 rounded-lg'
         onChange={handleChange} />
-        <input type='text' placeholder='pasword' id='password' className='bg-slate-100 p-3 rounded-lg'
+        <input type='password' placeholder='pasword' id='password' className='bg-slate-100 p-3 rounded-lg'
         onChange={handleChange} />
         <button disabled={loading} className='bg-green-700 text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80'>
           {loading ? 'Loading ....' : 'Sign Up'}
