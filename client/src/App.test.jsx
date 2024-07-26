@@ -10,6 +10,6 @@ describe('App rendering', () => {
       app = render(<App />);
     });
     const elementList = app.container.querySelectorAll('div');
-    expect(elementList).toHaveLength(2);
+    expect(elementList).toHaveLength(4);
   });
 });
