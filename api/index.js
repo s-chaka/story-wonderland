@@ -42,6 +42,16 @@ if (import.meta.url == `file://${process.argv[1]}`) {
 app.use('/api/user', userRouter);
 app.use('/api/auth', authRouter);
 
+// middleware that handles possible errors
+app.use((err, req, res, next) => {
+  const statusCode = err.statusCode || 400;
+  const message = err.message || 'bad request';
+  return res.status(statusCode).json({ 
+    success: false,
+    statusCode,
+    message,
+  });
+});
 
 // serves static files from vite's build output.This line configures the application to serve static files (like HTML, CSS, and JavaScript) from the client/dist directory.
 app.use(express.static(path.join(__dirname, 'client/dist')));
