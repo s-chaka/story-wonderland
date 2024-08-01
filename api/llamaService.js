@@ -22,7 +22,7 @@ export const generateStorySegment = async (genre) => {
       },
     });
     const segment = response.data.choices[0].message.content;
-    console.log("Api response Content:", segment);
+    // console.log("Api response Content:", segment);
     // return response.data.choices[0].message.content;  // Update this based on API response format
     return segment; 
   } catch (error) {
@@ -53,5 +53,30 @@ export const continueStorySegment = async (choice) => {
   } catch (error) {
     console.error("Error continuing story segment:", error);  
     throw new Error(error.response ? error.response.data : error.message);
+  }
+};
+
+export const generateFinalStorySegment = async (story) => {
+  try {
+      const response = await axios.post(llamaBaseUrl, {
+          model: "llama-13b-chat",
+          messages: [
+              { role: "system", content: "Assistant is a large language model trained by OpenAI." },
+              { role: "user", content: `End the following story with a satisfying conclusion: ${story} without giving choises` }
+          ],
+          max_tokens: 500,
+      }, {
+          headers: {
+              'Authorization': `Bearer ${llamaApiKey}`,
+              'Content-Type': 'application/json',
+          },
+      });
+
+      const segment = response.data.choices[0].message.content;
+      console.log("API Response Content:", segment);
+      return segment;
+  } catch (error) {
+      console.error("Error generating final story segment:", error);
+      throw new Error(error.response ? error.response.data : error.message);
   }
 };

@@ -1,6 +1,6 @@
 // import storySegment from "../models/storySegment";
 import axios from "axios";
-import { continueStorySegment, generateStorySegment } from "../llamaService.js";
+import { continueStorySegment, generateFinalStorySegment, generateStorySegment } from "../llamaService.js";
 
 const extractChoices = (segment) => {
     // const choiceRegex = /(\d+)\.\s\*\*(.*?)\*\*:/g;
@@ -26,7 +26,7 @@ const extractChoices = (segment) => {
 
 export const createFirstSegment= async (req, res) => {
     const { genre } = req.body;
-    console.log("Request to generate story segment with genre:", genre);  // Log request
+    console.log("Request to generate story segment with genre:", genre);  
     try {
       const segment = await generateStorySegment(genre);
 
@@ -42,13 +42,12 @@ export const createFirstSegment= async (req, res) => {
     }
   };
   
-
-// app.post('/continue-story', 
 export const createNextSegment= async (req, res) => {
     const { choice } = req.body;
-    console.log("Request to continue story with choice:", choice);  // Log request
+    console.log("*******Request to continue story with choice:", choice);
     try {
         const segment = await continueStorySegment(choice);
+        console.log("Segment:", segment);  
         const choices = extractChoices(segment);
 
         res.json({
@@ -57,7 +56,22 @@ export const createNextSegment= async (req, res) => {
           });
 
     } catch (error) {
-      console.error("Error in /continue-story endpoint:", error.message);  // Log error
+      console.error("Error in /continue-story endpoint:", error.message);  
       res.status(500).json({ error: error.message });
     }
   };
+
+  export const endStorySegment = async (req, res) => {
+    const { story } = req.body;
+    console.log("Request to end story:", story);  // Log request
+    try {
+        const segment = await generateFinalStorySegment(story);
+
+        res.json({
+            segment
+        });
+    } catch (error) {
+        console.error("Error in /end-story endpoint:", error.message);  // Log error
+        res.status(500).json({ error: error.message });
+    }
+};

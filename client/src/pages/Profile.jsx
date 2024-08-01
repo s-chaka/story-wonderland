@@ -26,7 +26,7 @@ const Profile= ()=> {
   return (
     <div className="p-3 max-w-7xl mx-auto">
       {/* <div className="fw-1/4 p-3 flex flex-col justify-center items-center">  */}
-      <div className="absolute top-1 right-6 p-3"> 
+      <div className="absolute top-10 right-10 p-3"> 
         <span onClick={handleSignOut} className="text-blue-700 cursor-pointer"> Sign Out</span> 
       </div>
       <h1 className='text-3xl font-semibold text-center my-7'> Hello {currentUser.username}</h1>
