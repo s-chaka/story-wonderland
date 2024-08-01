@@ -9,12 +9,12 @@ export default defineConfig({
       '/api': {
         target: 'http://localhost:3000',
         secure: false,
-      },
+        },
     },
   },
   test: {
     // jest config here
-    reporters: ['verbose'],
+    // reporters: ['verbose'],
     environment: 'jsdom',
     // globals: true,
     setupFiles: ['./vitest.setup.js'],
