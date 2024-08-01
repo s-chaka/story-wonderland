@@ -4,23 +4,12 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
-  // server: {
-  //   proxy: {
-  //     '/api': {
-  //       target: 'http://localhost:3000',
-  //       secure: false,
-  //     },
-  //   },
-  // },
   server: {
     proxy: {
       '/api': {
         target: 'http://localhost:3000',
         secure: false,
         },
-      '/generate-story': 'http://localhost:3000',
-      '/save-story': 'http://localhost:3000',
-      '/continue-story': 'http://localhost:3000',
     },
   },
   test: {

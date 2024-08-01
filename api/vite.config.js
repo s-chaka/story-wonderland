@@ -7,9 +7,10 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-      '/generate-story': 'http://localhost:3000',
-      '/save-story': 'http://localhost:3000',
-      '/continue-story': 'http://localhost:3000',
+      '/api': {
+        target: 'http://localhost:3000',
+        secure: false,
+        },
     },
   },
   test: {

@@ -5,16 +5,16 @@ dotenv.config();
 
 const llamaApiKey = process.env.LLAMA_API_KEY;
 const llamaBaseUrl = 'https://api.llama-api.com/chat/completions';  // Updated URL
-
+// console.log(`Llama API Key: ${llamaApiKey}`);
 export const generateStorySegment = async (genre) => {
   try {
     const response = await axios.post(llamaBaseUrl, {
       model: "llama-13b-chat",  // Example model name, update if needed
       messages: [
         { role: "system", content: "Assistant is a large language model trained by OpenAI." },
-        { role: "user", content: `Generate the first detailed segment of a ${genre} story with a minimum of 5 lines for children under 10 years old. Provide 2 choices for the next story segment path, and enumerate the choices.` }
+        { role: "user", content: `Generate the first detailed segment of a ${genre} story with a maximum of 5 lines for children under 10 years old. Provide 2 choices for the next story segment path, and enumerate the choices.` }
       ],
-      max_tokens: 10000,
+      max_tokens: 500,
     }, {
       headers: {
         'Authorization': `Bearer ${llamaApiKey}`,
@@ -37,8 +37,9 @@ export const continueStorySegment = async (choice) => {
       model: "llama-13b-chat",  // Example model name, update if needed
       messages: [
         { role: "system", content: "Assistant is a large language model trained by OpenAI." },
-        { role: "user", content: `Continue the story with the choice: ${choice.text}` }
-      ]
+        { role: "user", content: `Continue the story with the choice: ${choice} story with a maximum of 5 lines for children under 10 years old. Provide 2 choices for the next story segment path, and enumerate the choices.` }
+      ],
+      max_tokens: 500,
     }, {
       headers: {
         'Authorization': `Bearer ${llamaApiKey}`,

@@ -5,8 +5,7 @@ import axios from 'axios';
 import path from 'path';
 import userRouter from './routes/user.route.js';
 import authRouter from './routes/auth.route.js';
-import { generateStorySegment, continueStorySegment } from './llamaService.js';
-import StorySegment from './models/storySegment.js';
+import storyRouter from './routes/story.route.js';
 
 dotenv.config();
 
@@ -35,31 +34,7 @@ export default app;
 /////******** */ This is to test the llama api**********************************************
 
 const llamaApiKey = process.env.LLAMA_API_KEY;
-// console.log(`*This is from index.js*************Llama API Key: ${llamaApiKey}`);
 
-app.post('/generate-story', async (req, res) => {
-  const { genre } = req.body;
-  console.log("Request to generate story segment with genre:", genre);  // Log request
-  try {
-    const segment = await generateStorySegment(genre);
-    res.json({ segment });
-  } catch (error) {
-    console.error("Error in /generate-story endpoint:", error.response ? error.response.data : error.message);  // Log error
-    res.status(500).json({ error: error.response ? error.response.data : error.message });
-  }
-});
-
-app.post('/continue-story', async (req, res) => {
-  const { choice } = req.body;
-  console.log("Request to continue story with choice:", choice);  // Log request
-  try {
-    const segment = await continueStorySegment(choice);
-    res.json({ segment });
-  } catch (error) {
-    console.error("Error in /continue-story endpoint:", error.message);  // Log error
-    res.status(500).json({ error: error.message });
-  }
-});
 
 app.post('/save-story', async (req, res) => {
   const { genre, segment, choices } = req.body;
@@ -89,6 +64,7 @@ if (import.meta.url == `file://${process.argv[1]}`) {
 
 app.use('/api/user', userRouter);
 app.use('/api/auth', authRouter);
+app.use('/api', storyRouter);
 
 // middleware that handles possible errors
 app.use((err, req, res, next) => {
