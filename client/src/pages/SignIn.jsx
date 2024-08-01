@@ -5,7 +5,7 @@ import OAuth from '../components/OAuth';
 import { signInStart, signInSuccess,signInFailure } from '../redux/user/userSlice';
 import { useDispatch, useSelector } from 'react-redux';
 
-export default function SignIn() {
+const SignIn= () => {
   const [formData, setFormData] = useState({});
   // const [error, setError] = useState(null);
   // const [loading, setLoading] = useState(false);
@@ -17,7 +17,7 @@ export default function SignIn() {
   const handleChange = (e) => {
     setFormData({...formData, [e.target.id]: e.target.value});
   }
-  console.log(formData)
+  // console.log(formData)
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -70,5 +70,6 @@ export default function SignIn() {
         <p className='text-red-700 mt-5'>{error ? error.message || 'Something went wrong!' : ''}</p>
       </div>
   )
-}
+};
+export default SignIn;
 
