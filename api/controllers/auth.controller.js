@@ -3,6 +3,8 @@ import bcryptjs from "bcryptjs";
 import { errorHandler } from "../utils/error.js";
 import jwt from "jsonwebtoken";
 
+
+// signup api route
 export const signup = async (req, res, next) => {
   const { username, email, password } = req.body;
   const hashedPassword = bcryptjs.hashSync(password, 10);
@@ -14,6 +16,7 @@ export const signup = async (req, res, next) => {
     next(error); 
   }  
 };
+
 
 // signin api route
 export const signin = async (req, res, next) => {
@@ -33,6 +36,8 @@ export const signin = async (req, res, next) => {
   }
 };
 
+
+// google signin api route
 export const google= async (req, res, next) => {
   try {
     const user = await User.findOne({ email: req.body.email });
@@ -44,7 +49,9 @@ export const google= async (req, res, next) => {
     } else {
       const generatedPassword = Math.random().toString(36).slice(-8) + Math.random().toString(36).slice(-8);
       const hashedPassword = bcryptjs.hashSync(generatedPassword, 10);
-      const newUser = new User({ username: req.body.name.split(" ").join("").toLowerCase()+ Math.floor(Math.random() * 10000).toString(), email:req.body.email, password: hashedPassword, profilePic: req.body.photo
+      // const newUser = new User({ username: req.body.name.split(" ").join("").toLowerCase()+ Math.floor(Math.random() * 10000).toString(), email:req.body.email, password: hashedPassword, profilePic: req.body.photo
+      // });
+      const newUser = new User({ username: req.body.name.split(" ").join("").toLowerCase().toString(), email:req.body.email, password: hashedPassword, profilePic: req.body.photo
       });
       await newUser.save();
       const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET_KEY);
@@ -57,3 +64,13 @@ export const google= async (req, res, next) => {
   }
 };
 
+
+// signout api route
+export const signout = async (req, res, next) => {
+  try {
+    res.clearCookie('access_token');
+    res.status(200).json('Signout successful!');
+  } catch (error) {
+    next(error);
+  }
+};

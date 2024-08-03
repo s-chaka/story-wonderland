@@ -5,6 +5,7 @@ import axios from 'axios';
 import path from 'path';
 import userRouter from './routes/user.route.js';
 import authRouter from './routes/auth.route.js';
+import storyRouter from './routes/story.route.js';
 
 dotenv.config();
 
@@ -30,6 +31,28 @@ export const fetchData = async () => {
 };
 export default app;
 
+/////******** */ This is to test the llama api**********************************************
+
+const llamaApiKey = process.env.LLAMA_API_KEY;
+
+
+app.post('/save-story', async (req, res) => {
+  const { genre, segment, choices } = req.body;
+  const newSegment = new StorySegment({
+    genre,
+    segment,
+    choices,
+  });
+
+  try {
+    const savedSegment = await newSegment.save();
+    res.json(savedSegment);
+  } catch (error) {
+    console.error("Error in /save-story endpoint:", error.message);  // Log error
+    res.status(500).json({ error: error.message });
+  }
+});
+//************************************************************ */
 if (import.meta.url == `file://${process.argv[1]}`) {
   const PORT = process.env.PORT || 3000;
   app.listen(PORT, () => {
@@ -41,6 +64,7 @@ if (import.meta.url == `file://${process.argv[1]}`) {
 
 app.use('/api/user', userRouter);
 app.use('/api/auth', authRouter);
+app.use('/api', storyRouter);
 
 // middleware that handles possible errors
 app.use((err, req, res, next) => {
