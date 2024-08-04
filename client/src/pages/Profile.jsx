@@ -33,11 +33,11 @@ const Profile= ()=> {
   
   useEffect(() => {
     if(image){
-      handleFileUpload(image);
+      handleImageUpload(image);
     }
     
   }, [image]);
-  const handleFileUpload = async (image) => {
+  const handleImageUpload = async (image) => {
     const storage = getStorage(app);
     const fileName = new Date().getTime() + image.name;
     const storageRef = ref(storage, fileName);
