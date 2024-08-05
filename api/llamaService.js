@@ -11,7 +11,7 @@ export const generateStorySegment = async (genre) => {
     const response = await axios.post(llamaBaseUrl, {
       model: "llama-13b-chat",  // Example model name, update if needed
       messages: [
-        { role: "system", content: "Assistant is a large language model trained by OpenAI." },
+        { role: "system", content: "As story generator and narrator only include the story title in the beggining with out any other nonrelated phrases." },
         { role: "user", content: `Generate the first detailed segment of a ${genre} story with a maximum of 5 lines for children under 10 years old. Provide 2 choices for the next story segment path, and enumerate the choices.` }
       ],
       max_tokens: 500,

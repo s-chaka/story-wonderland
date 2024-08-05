@@ -2,9 +2,6 @@ import User from "../models/user.js";
 import { errorHandler } from "../utils/error.js";
 import bcryptjs from "bcryptjs";
 
-export const test = (req, res) => {
-  res.send('Hi there, testing api route is working!😀');
-};
 
 export const updateUser = async (req, res, next) => {
   if(req.user.id !== req.params.id){

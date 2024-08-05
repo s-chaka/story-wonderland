@@ -1,5 +1,4 @@
-// import storySegment from "../models/storySegment";
-import axios from "axios";
+import { Story } from "../models/storySegment.js";
 import { continueStorySegment, generateFinalStorySegment, generateStorySegment } from "../llamaService.js";
 
 const extractChoices = (segment) => {
@@ -74,4 +73,21 @@ export const createNextSegment= async (req, res) => {
         console.error("Error in /end-story endpoint:", error.message);  // Log error
         res.status(500).json({ error: error.message });
     }
-};
+  };
+
+// save story segment to the database
+  export const saveStory = async (req, res) => {
+    const { userId, story } = req.body;
+
+    if (!userId || !story) {
+      return res.status(400).json({ error: "All fields are required" });
+    }
+    try {
+      const newStory = new Story({ userId, story });
+        await newStory.save();
+        res.status(201).json({ message: "Story saved successfully!" });
+    } catch (error) {
+      console.error("Error saving story:", error.message);
+      res.status(500).json({ error: error.message });
+    }
+  };
