@@ -1,13 +1,15 @@
-import React from 'react';
-import { useState } from 'react';
+// import React from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { set } from 'mongoose';
+// import { set } from 'mongoose';
 
 const Story = () =>  {
     const [genre, setGenre] = useState('');
     const [story, setStory] = useState('');
     const [choices, setChoices] = useState([]);
     const [isStoryEnded, setIsStoryEnded] = useState(false);
+    const [userId, setUserId] = useState('null');
+
 
     const handleGenreChange = (e) => setGenre(e.target.value);
 
@@ -48,9 +50,34 @@ const Story = () =>  {
         }
     };
     
+
+    const fetchUserId = async () => {
+        try {
+            const response = await axios.get('/api/auth/get-user-id');
+            setUserId(response.data.userId);
+        } catch (error) {
+            console.error('Error fetching user ID:', error.response?.data || error.message || error);
+        }
+    };
+
     const saveStory = async () => {
-        console.log('Story saved:', story);
-    }
+        if (!userId) {
+            console.error('User ID is not available.');
+            return;
+        }
+
+        try {
+            const response = await axios.post('/api/save-story', { userId, story });
+            console.log('Story saved:', response.data);
+        } catch (error) {
+            console.error('Error saving story:', error.response?.data || error.message || error);
+        }
+    };
+
+    useEffect(() => {
+        fetchUserId(); // Fetch user ID when component mounts
+    }, []);
+
 
     return (
         <div className='p-6 max-w-lg mx-auto bg-white rounded-xl shadow-md space-y-4'>
@@ -97,7 +124,7 @@ const Story = () =>  {
                 Save Story
             </button>
         )}
-     </div> 
+    </div> 
     );
 };
 export default Story;

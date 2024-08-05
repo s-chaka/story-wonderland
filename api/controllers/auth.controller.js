@@ -74,3 +74,20 @@ export const signout = async (req, res, next) => {
     next(error);
   }
 };
+
+
+// get user id from token
+export const getUserId = async (req, res) => {
+    try {
+        const token = req.cookies.access_token; // Retrieve token from cookies
+        // console.log('Token:', token); // Debug log
+
+        if (!token) return res.status(401).json({ error: 'Unauthorized' });
+
+        const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY); // Verify token
+        res.json({ userId: decoded.id }); // Respond with userId
+    } catch (error) {
+        console.error('Error decoding JWT:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+};

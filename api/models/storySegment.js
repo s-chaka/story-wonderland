@@ -14,6 +14,13 @@ const storySegmentSchema = new Schema({
   ],
 });
 
-const StorySegment = model('StorySegment', storySegmentSchema);
+const storySchema = new Schema({
+  _id: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+  story: { type: String, required: true },
+  createdAt: { type: Date, default: Date.now }
+});
 
-export default StorySegment;
+export const Story = model('Story', storySchema);
+export const StorySegment = model('StorySegment', storySegmentSchema);
+
+
