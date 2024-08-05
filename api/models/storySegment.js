@@ -15,7 +15,7 @@ const storySegmentSchema = new Schema({
 });
 
 const storySchema = new Schema({
-  _id: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+  userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
   story: { type: String, required: true },
   createdAt: { type: Date, default: Date.now }
 });
