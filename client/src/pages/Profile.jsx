@@ -5,7 +5,14 @@ import { signOut } from "../redux/user/userSlice";
 import { useRef, useState, useEffect } from "react";
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage';
 import { app } from '../firebase';
-import { updateUserStart, updateUserSuccess,updateUserFailure } from "../redux/user/userSlice";
+import { 
+  updateUserStart, 
+  updateUserSuccess,
+  updateUserFailure, 
+  deleteUserStart, 
+  deleteUserSuccess, 
+  deleteUserFailure,
+} from "../redux/user/userSlice";
 
 
 const Profile= ()=> {
@@ -93,6 +100,24 @@ const Profile= ()=> {
     }
   };
 
+  const handleDeleteAccount = async () => {
+    try {
+      dispatch(deleteUserStart());
+      const res = await fetch(`/api/user/delete/${currentUser._id}`, {
+        method: 'DELETE',
+      });
+      const data = await res.json();
+      if(data.success === false){
+        dispatch(deleteUserFailure(data));
+        return;
+      }
+      dispatch(deleteUserSuccess());
+    } catch (error) {
+      dispatch(deleteUserFailure(error));
+      console.log(error);
+    }
+  }
+
   return (
     <div className="p-3 max-w-7xl mx-auto">
       <div className="absolute top-10 right-10 p-3"> 
@@ -130,7 +155,7 @@ const Profile= ()=> {
               <button disabled={loading} className="bg-green-700 text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80">
                 {loading ? 'Loading...' : 'Update'}
               </button>
-              <span className="text-red-700 cursor-pointer mb-4"> Delete Account</span>
+              <span onClick={handleDeleteAccount} className="text-red-700 cursor-pointer mb-4"> Delete Account</span>
               <p className="text-red-700 mt-7">{error ? error : ''}</p>
               <p className="text-green-700 mt-7">{updateSuccess ? 'User is updated successfuly' : ''}</p>
             </form>
