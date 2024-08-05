@@ -6,6 +6,7 @@ import path from 'path';
 import userRouter from './routes/user.route.js';
 import authRouter from './routes/auth.route.js';
 import storyRouter from './routes/story.route.js';
+import cookieParser from 'cookie-parser';
 
 dotenv.config();
 
@@ -23,6 +24,7 @@ const __dirname = path.resolve();
 const app = express();
 
 app.use(express.json());
+app.use(cookieParser());
 
 //example api
 export const fetchData = async () => {
