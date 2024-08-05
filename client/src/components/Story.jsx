@@ -1,8 +1,7 @@
 // import React from 'react';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { set } from 'mongoose';
-// import { set } from 'mongoose';
+
 
 const Story = () =>  {
     const [genre, setGenre] = useState('');
