@@ -6,13 +6,10 @@ import axios from 'axios';
 const Story = () =>  {
     const [genre, setGenre] = useState('');
     const [currentSegment, setCurrentSegment] = useState('');
-    // const [story, setStory] = useState('');
     const [choices, setChoices] = useState([]);
     const [isStoryEnded, setIsStoryEnded] = useState(false);
     const [userId, setUserId] = useState('null');
-
     const [segmentHistory, setSegmentHistory] = useState([]);
-    console.log(segmentHistory);
     const [choicesHistory, setChoicesHistory] = useState([]);
     const [currentIndex, setCurrentIndex] = useState(-1);
     const [showFullStory, setShowFullStory] = useState(false);
@@ -25,8 +22,6 @@ const Story = () =>  {
             const response = await axios.post('/api/generate-story', { genre });
             const {segment, choices} = response.data;
             
-            // setStory(segment);
-            console.log('Generated Segment:', segment);
             setSegmentHistory([segment]);
             setChoicesHistory([choices]);
             setCurrentSegment(segment);
@@ -75,15 +70,20 @@ const Story = () =>  {
         }
     };
     
-
     const fetchUserId = async () => {
         try {
-            const response = await axios.get('/api/auth/get-user-id');
+            const response = await axios.get('/api/auth/get-user-id',{
+                // headers: { 'Authorization': `Bearer ${access_token}` }, // Replace `yourToken` with the actual token
+                withCredentials: true});
             setUserId(response.data.userId);
         } catch (error) {
             console.error('Error fetching user ID:', error.response?.data || error.message || error);
         }
     };
+
+    useEffect(() => {
+        fetchUserId(); // Fetch user ID when component mounts
+    }, []);
 
     const saveStory = async () => {
         if (!userId) {
@@ -100,10 +100,6 @@ const Story = () =>  {
         }
     };
 
-    useEffect(() => {
-        fetchUserId(); // Fetch user ID when component mounts
-    }, []);
-
     const handleBack = () => {
         if (currentIndex > 0) {
             setCurrentIndex(currentIndex - 1);
@@ -112,7 +108,6 @@ const Story = () =>  {
             setIsStoryEnded(false);
         }
     }
-
 
     return (
         <div className='p-6 max-w-lg mx-auto bg-white rounded-xl shadow-md space-y-4'>

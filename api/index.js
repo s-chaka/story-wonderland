@@ -7,6 +7,7 @@ import userRouter from './routes/user.route.js';
 import authRouter from './routes/auth.route.js';
 import storyRouter from './routes/story.route.js';
 import cookieParser from 'cookie-parser';
+import cors from 'cors';
 
 dotenv.config();
 
@@ -23,27 +24,24 @@ const __dirname = path.resolve();
 
 const app = express();
 
+const corsOptions = {
+  origin: 'http://localhost:5173',// frontend url
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
 app.use(express.json()); 
 app.use(cookieParser()); 
 
-//example api
-export const fetchData = async () => {
-  const response = await axios.get('https://api.example.com/data');
-  return response;
-};
-export default app;
-
-
 if (
   import.meta.url == `file://${process.argv[1]}`
-  ) {
+) {
   const PORT = process.env.PORT || 3000;
   app.listen(PORT, () => {
     console.log('Server is running on port 3000!!');
   }
-  );
+);
 };
-
 
 app.use('/api/user', userRouter);
 app.use('/api/auth', authRouter);
@@ -68,3 +66,5 @@ app.use(express.static(path.join(__dirname, 'client/dist')));
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'));
 });
+
+export default app;
