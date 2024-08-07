@@ -12,7 +12,7 @@ const Story = () =>  {
     const [userId, setUserId] = useState('null');
 
     const [segmentHistory, setSegmentHistory] = useState([]);
-    console.log(segmentHistory);
+    // console.log(segmentHistory);
     const [choicesHistory, setChoicesHistory] = useState([]);
     const [currentIndex, setCurrentIndex] = useState(-1);
     const [showFullStory, setShowFullStory] = useState(false);
@@ -75,22 +75,13 @@ const Story = () =>  {
         }
     };
     
-
-    const fetchUserId = async () => {
-        try {
-            const response = await axios.get('/api/auth/get-user-id');
-            setUserId(response.data.userId);
-        } catch (error) {
-            console.error('Error fetching user ID:', error.response?.data || error.message || error);
-        }
-    };
-
+    
     const saveStory = async () => {
         if (!userId) {
             console.error('User ID is not available.');
             return;
         }
-
+        
         try {
             const response = await axios.post('/api/save-story', { userId, story: segmentHistory.join('\n\n') });
             console.log('Story saved:', response.data);
@@ -99,7 +90,15 @@ const Story = () =>  {
             console.error('Error saving story:', error.response?.data || error.message || error);
         }
     };
-
+    
+    const fetchUserId = async () => {
+        try {
+            const response = await axios.get('/api/auth/get-user-id');
+            setUserId(response.data.userId);
+        } catch (error) {
+            console.error('Error fetching user ID:', error.response?.data || error.message || error);
+        }
+    };
     useEffect(() => {
         fetchUserId(); // Fetch user ID when component mounts
     }, []);
@@ -112,7 +111,6 @@ const Story = () =>  {
             setIsStoryEnded(false);
         }
     }
-
 
     return (
         <div className='p-6 max-w-lg mx-auto bg-white rounded-xl shadow-md space-y-4'>

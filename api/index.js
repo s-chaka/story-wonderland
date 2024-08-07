@@ -22,28 +22,8 @@ mongoose.connect(process.env.MONGO)
 const __dirname = path.resolve();
 
 const app = express();
-
 app.use(express.json()); 
 app.use(cookieParser()); 
-
-//example api
-export const fetchData = async () => {
-  const response = await axios.get('https://api.example.com/data');
-  return response;
-};
-export default app;
-
-
-if (
-  import.meta.url == `file://${process.argv[1]}`
-  ) {
-  const PORT = process.env.PORT || 3000;
-  app.listen(PORT, () => {
-    console.log('Server is running on port 3000!!');
-  }
-  );
-};
-
 
 app.use('/api/user', userRouter);
 app.use('/api/auth', authRouter);
@@ -68,3 +48,16 @@ app.use(express.static(path.join(__dirname, 'client/dist')));
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'));
 });
+
+
+if (
+  import.meta.url == `file://${process.argv[1]}`
+  ) {
+  const PORT = process.env.PORT || 3000;
+  app.listen(PORT, () => {
+    console.log('Server is running on port 3000!!');
+  }
+  );
+};
+
+// export default app;
