@@ -2,7 +2,7 @@ import { useSelector } from "react-redux"
 import Story from "../components/Story";
 import SavedStories from "../components/SavedStories";
 import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link , useNavigate} from "react-router-dom";
 import { signOut } from "../redux/user/userSlice";
 import { useRef, useState, useEffect } from "react";
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage';
@@ -16,6 +16,7 @@ import {
   deleteUserFailure,
 } from "../redux/user/userSlice";
 
+
 const Profile= ()=> {
   const fileRef = useRef(null);
   const {currentUser, loading, error} = useSelector((state) => state.user);
@@ -27,6 +28,7 @@ const Profile= ()=> {
   const [updateSuccess, setUpdateSuccess] = useState(false);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const toggleProfileDetails = () => {
     setShowProfileDetails(!showProfileDetails);
@@ -89,6 +91,7 @@ const Profile= ()=> {
       const data = await res.json();
       if(data.success === false){
         dispatch(updateUserFailure(data.message));
+        navigate('/sign-in');
         return;
       }
       dispatch(updateUserSuccess(data));

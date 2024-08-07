@@ -7,6 +7,7 @@ import userRouter from './routes/user.route.js';
 import authRouter from './routes/auth.route.js';
 import storyRouter from './routes/story.route.js';
 import cookieParser from 'cookie-parser';
+import cors from 'cors';
 
 dotenv.config();
 
@@ -22,8 +23,15 @@ mongoose.connect(process.env.MONGO)
 const __dirname = path.resolve();
 
 const app = express();
+const corsOptions = {
+  origin: 'http://localhost:5173',// frontend url
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
 app.use(express.json()); 
 app.use(cookieParser()); 
+
 
 app.use('/api/user', userRouter);
 app.use('/api/auth', authRouter);
@@ -59,5 +67,6 @@ if (
   }
   );
 };
+
 
 // export default app;

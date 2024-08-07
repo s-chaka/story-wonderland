@@ -1,21 +1,24 @@
-// import { useState } from 'react'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import OAuth from '../components/OAuth';
-import { signInStart, signInSuccess,signInFailure } from '../redux/user/userSlice';
+import { signInStart, signInSuccess,signInFailure,resetError } from '../redux/user/userSlice';
 import { useDispatch, useSelector } from 'react-redux';
 
 const SignIn= () => {
   const [formData, setFormData] = useState({});
-  //This useSelector hook is used to get the loading and error state from the store
   const {loading, error} = useSelector((state) => state.user);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  useEffect(()=>{
+    dispatch(resetError());
+  }, [dispatch])
+
   const handleChange = (e) => {
     setFormData({...formData, [e.target.id]: e.target.value});
   }
-  // console.log(formData)
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -30,18 +33,14 @@ const SignIn= () => {
       });
       const data = await res.json();
       //This dispatches the signInSuccess action so that the currentUser is set to the data returned from the server
-      // setLoading(false);
       if (data.success === false) {
         dispatch(signInFailure(data));
-        // setError(true);
         return;
       }
       dispatch(signInSuccess(data));
       navigate('/')
     } catch (error) {
       dispatch(signInFailure(error));
-      // setLoading(false);
-      // setError(true);
     }
   }
   return (
