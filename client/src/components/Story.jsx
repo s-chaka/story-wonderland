@@ -60,6 +60,7 @@ const Story = () =>  {
             setSegmentHistory(newSegmentHistory);
             setChoicesHistory([...choicesHistory,[]]);
             setCurrentSegment(segment);
+            // setStory((prev) => `${prev}\n\n${segment}`);
             setChoices([]);  // No more choices, story has ended
             setIsStoryEnded(true);
             setCurrentIndex(newSegmentHistory.length - 1);

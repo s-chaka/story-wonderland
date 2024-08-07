@@ -1,5 +1,8 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { signOut } from '../redux/user/userSlice';
+import { useDispatch } from 'react-redux';
 
 
 const colors = [
@@ -11,23 +14,29 @@ const getRandomColor = () => {
     return colors[Math.floor(Math.random() * colors.length)];
 };
 
-const SavedStories =() =>{
+const SavedStories = () => {
     const [stories, setStories] = useState([]);
     const [userId, setUserId] = useState(null);
     const [error, setError] = useState(null);
-    const [selectedStory, setSelectedStory] = useState(null);  
-
+    const [selectedStory, setSelectedStory] = useState(null);
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const fetchUserId = async () => {
         try {
             const response = await fetch('/api/auth/get-user-id');
             if (!response.ok) {
+                if (response.status === 401) {
+                    console.log('User not authenticated');
+                    dispatch(signOut());
+                    navigate('/sign-in');
+                }
                 throw new Error('Failed to fetch user ID');
             }
             const data = await response.json();
             return data.userId;
         } catch (error) {
-            console.error('Error fetching user ID:', error.message);
+            // console.error('Error fetching user ID:', error.message);
             setError(error.message);
             return null;
         }
@@ -37,23 +46,27 @@ const SavedStories =() =>{
         try {
             const response = await fetch(`/api/saved-stories/${userId}`);
             if (!response.ok) {
+                if (response.status === 401) {
+                    // navigate('/sign-in');
+                    handleSignOut();
+                }
                 throw new Error('Network response was not ok');
             }
             const data = await response.json();
             console.log('Fetched stories:', data);
             setStories(data);
         } catch (error) {
-            console.error('Error fetching saved stories:', error.message);
+            // console.error('Error fetching saved stories:', error.message);
             setError(error.message);
         }
     };
 
     useEffect(() => {
         const loadStories = async () => {
-        const userId = await fetchUserId();
-        if (userId) {
-            fetchSavedStories(userId);
-        }
+            const userId = await fetchUserId();
+            if (userId) {
+                fetchSavedStories(userId);
+            }
         };
         loadStories();
     }, []);
