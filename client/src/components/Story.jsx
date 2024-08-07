@@ -44,7 +44,6 @@ const Story = () =>  {
             setSegmentHistory(newSegmentHistory);
             setChoicesHistory(newChoicesHistory);
             setCurrentSegment(segment);
-            // setStory((prev) => `${prev}\n\n${segment}`);
             setChoices(choices);
             setCurrentIndex(newSegmentHistory.length - 1);
         } catch (error) {
@@ -61,7 +60,6 @@ const Story = () =>  {
             setSegmentHistory(newSegmentHistory);
             setChoicesHistory([...choicesHistory,[]]);
             setCurrentSegment(segment);
-            // setStory((prev) => `${prev}\n\n${segment}`);
             setChoices([]);  // No more choices, story has ended
             setIsStoryEnded(true);
             setCurrentIndex(newSegmentHistory.length - 1);
@@ -90,7 +88,7 @@ const Story = () =>  {
             console.error('User ID is not available.');
             return;
         }
-
+        
         try {
             const response = await axios.post('/api/save-story', { userId, story: segmentHistory.join('\n\n') });
             console.log('Story saved:', response.data);

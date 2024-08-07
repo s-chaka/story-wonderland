@@ -1,6 +1,8 @@
 import { useSelector } from "react-redux"
 import Story from "../components/Story";
+import SavedStories from "../components/SavedStories";
 import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
 import { signOut } from "../redux/user/userSlice";
 import { useRef, useState, useEffect } from "react";
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage';
@@ -14,7 +16,6 @@ import {
   deleteUserFailure,
 } from "../redux/user/userSlice";
 
-
 const Profile= ()=> {
   const fileRef = useRef(null);
   const {currentUser, loading, error} = useSelector((state) => state.user);
@@ -24,9 +25,6 @@ const Profile= ()=> {
   const [imageUploadError, setImageUploadError] = useState(false);
   const [formData, setFormData] = useState({});
   const [updateSuccess, setUpdateSuccess] = useState(false);
-
-  console.log(formData)
-  
 
   const dispatch = useDispatch();
 
@@ -123,7 +121,7 @@ const Profile= ()=> {
       <div className="absolute top-10 right-10 p-3"> 
         <span onClick={handleSignOut} className="text-blue-700 cursor-pointer"> Sign Out</span> 
       </div>
-      <h1 className='text-3xl font-semibold text-center my-7'> Hello {currentUser.username}</h1>
+      <h1 className='text-3xl font-semibold text-center my-7'> Hello this is {currentUser.username}'s Dashboard</h1>
       <div className="flex">
         <div className="w-1/4 p-3">
           <button onClick={toggleProfileDetails} className="bg-green-700 text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80">
@@ -163,6 +161,11 @@ const Profile= ()=> {
         </div>
         <div className="w-2/4 p-3">
           <Story/>
+        </div>
+        <div className="mt-4 font-bold text-center">
+          <Link to="/stories" className="text-green-500 hover:underline">
+            Go to my Saved Stories
+          </Link>
         </div>
       </div>
     </div>

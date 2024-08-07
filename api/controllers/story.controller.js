@@ -91,3 +91,16 @@ export const createNextSegment= async (req, res) => {
       res.status(500).json({ error: error.message });
     }
   };
+
+  export const getSavedStories = async (req, res) => {
+    const { userId } = req.params;
+    // console.log("Request to get saved stories for user:", userId);  // Log request
+    try {
+      const stories = await Story.find({ userId }).sort({ createdAt: -1 });
+      res.json(stories);
+      // console.log("Stories:", stories);  // Log response
+    } catch (error) {
+      console.error("Error fetching saved stories:", error.message);  // Log error
+      res.status(500).json({ error: error.message });
+    }
+  };
