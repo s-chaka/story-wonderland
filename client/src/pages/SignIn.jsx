@@ -7,8 +7,6 @@ import { useDispatch, useSelector } from 'react-redux';
 
 const SignIn= () => {
   const [formData, setFormData] = useState({});
-  // const [error, setError] = useState(null);
-  // const [loading, setLoading] = useState(false);
   //This useSelector hook is used to get the loading and error state from the store
   const {loading, error} = useSelector((state) => state.user);
 
@@ -23,8 +21,6 @@ const SignIn= () => {
     try {
       //This dispatches the signInStart action so that the loading state is set to true
       dispatch(signInStart());
-      // setLoading(true);
-      // setError(false);
       const res = await fetch('/api/auth/signin',{
         method: 'POST',
         headers: {
