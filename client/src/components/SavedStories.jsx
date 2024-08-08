@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { signOut } from '../redux/user/userSlice';
 import { useDispatch } from 'react-redux';
@@ -16,7 +15,6 @@ const getRandomColor = () => {
 
 const SavedStories = () => {
     const [stories, setStories] = useState([]);
-    const [userId, setUserId] = useState(null);
     const [error, setError] = useState(null);
     const [selectedStory, setSelectedStory] = useState(null);
     const navigate = useNavigate();
@@ -47,13 +45,11 @@ const SavedStories = () => {
             const response = await fetch(`/api/saved-stories/${userId}`);
             if (!response.ok) {
                 if (response.status === 401) {
-                    // navigate('/sign-in');
                     handleSignOut();
                 }
                 throw new Error('Network response was not ok');
             }
             const data = await response.json();
-            console.log('Fetched stories:', data);
             setStories(data);
         } catch (error) {
             // console.error('Error fetching saved stories:', error.message);

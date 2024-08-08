@@ -25,7 +25,6 @@ const extractChoices = (segment) => {
 
 export const createFirstSegment= async (req, res) => {
     const { genre } = req.body;
-    console.log("Request to generate story segment with genre:", genre);  
     try {
       const segment = await generateStorySegment(genre);
 
@@ -43,10 +42,8 @@ export const createFirstSegment= async (req, res) => {
   
 export const createNextSegment= async (req, res) => {
     const { choice } = req.body;
-    console.log("*******Request to continue story with choice:", choice);
     try {
         const segment = await continueStorySegment(choice);
-        console.log("Segment:", segment);  
         const choices = extractChoices(segment);
 
         res.json({
@@ -62,7 +59,6 @@ export const createNextSegment= async (req, res) => {
 
   export const endStorySegment = async (req, res) => {
     const { story } = req.body;
-    console.log("Request to end story:", story);  // Log request
     try {
         const segment = await generateFinalStorySegment(story);
 
@@ -70,7 +66,7 @@ export const createNextSegment= async (req, res) => {
             segment
         });
     } catch (error) {
-        console.error("Error in /end-story endpoint:", error.message);  // Log error
+        console.error("Error in /end-story endpoint:", error.message);  
         res.status(500).json({ error: error.message });
     }
   };
@@ -94,13 +90,11 @@ export const createNextSegment= async (req, res) => {
 
   export const getSavedStories = async (req, res) => {
     const { userId } = req.params;
-    // console.log("Request to get saved stories for user:", userId);  // Log request
     try {
       const stories = await Story.find({ userId }).sort({ createdAt: -1 });
       res.json(stories);
-      // console.log("Stories:", stories);  // Log response
     } catch (error) {
-      console.error("Error fetching saved stories:", error.message);  // Log error
+      console.error("Error fetching saved stories:", error.message); 
       res.status(500).json({ error: error.message });
     }
   };

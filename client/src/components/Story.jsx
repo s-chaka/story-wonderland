@@ -1,4 +1,3 @@
-// import React from 'react';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { ref, listAll, getDownloadURL } from "firebase/storage";
@@ -76,7 +75,6 @@ const Story = () =>  {
             const response = await axios.post('/api/continue-story', { choice });
             const { segment, choices } = response.data;
             
-            console.log('Continued Segment:', segment); 
             const newSegmentHistory = [...segmentHistory, segment];
             const newChoicesHistory = [...choicesHistory, choices];
             setSegmentHistory(newSegmentHistory);
@@ -97,8 +95,8 @@ const Story = () =>  {
             const response = await axios.post('/api/end-story', { story: currentSegment });
             const { segment } = response.data;
 
-            console.log('End Segment:', segment); 
             const newSegmentHistory = [...segmentHistory, segment];
+
             setSegmentHistory(newSegmentHistory);
             setChoicesHistory([...choicesHistory,[]]);
             setCurrentSegment(segment);
@@ -114,7 +112,6 @@ const Story = () =>  {
     const fetchUserId = async () => {
         try {
             const response = await axios.get('/api/auth/get-user-id',{
-                // headers: { 'Authorization': `Bearer ${access_token}` }, // Replace `yourToken` with the actual token
                 withCredentials: true});
             setUserId(response.data.userId);
         } catch (error) {
