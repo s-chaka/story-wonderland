@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { ref, listAll, getDownloadURL } from "firebase/storage";
 import {storage} from '../firebase.js';  
+import { set } from 'mongoose';
 
 
 const Story = () =>  {
@@ -15,6 +16,7 @@ const Story = () =>  {
     const [currentIndex, setCurrentIndex] = useState(-1);
     const [showFullStory, setShowFullStory] = useState(false);
     const [backgroundImageUrl, setBackgroundImageUrl] = useState('');
+    const [isBackTracking, setIsBackTracking] = useState(false);
 
     // Function to handle genre change
     const handleGenreChange = (e) => setGenre(e.target.value);
@@ -62,6 +64,7 @@ const Story = () =>  {
             setChoices(choices);
             setCurrentIndex(0);
             setIsStoryEnded(false);
+            setIsBackTracking(false);
             fetchBackgroundImageUrl(genre);
 
         } catch (error) {
@@ -75,13 +78,28 @@ const Story = () =>  {
             const response = await axios.post('/api/continue-story', { choice });
             const { segment, choices } = response.data;
             
-            const newSegmentHistory = [...segmentHistory, segment];
-            const newChoicesHistory = [...choicesHistory, choices];
+            // const newSegmentHistory = [...segmentHistory, segment];
+            // const newChoicesHistory = [...choicesHistory, choices];
+
+            let newSegmentHistory = [...segmentHistory];
+            let newChoicesHistory = [...choicesHistory];
+
+            if (isBackTracking) {
+              newSegmentHistory[currentIndex] = segment;
+              newChoicesHistory[currentIndex] = choices;
+              setIsBackTracking(false); // Reset back tracking after new choice
+            }else {
+              newSegmentHistory = [...newSegmentHistory.slice(0,currentIndex +1), segment];
+              newChoicesHistory = [...newChoicesHistory.slice(0,currentIndex +1), choices];
+              setCurrentIndex(newSegmentHistory.length - 1);
+            }
+
             setSegmentHistory(newSegmentHistory);
             setChoicesHistory(newChoicesHistory);
             setCurrentSegment(segment);
             setChoices(choices);
-            setCurrentIndex(newSegmentHistory.length - 1);
+            // setCurrentIndex(newSegmentHistory.length - 1);
+            // setIsBackTracking(false); // Reset back tracking after new choice
             fetchBackgroundImageUrl(genre); // Fetch a background image
 
         } catch (error) {
@@ -103,7 +121,9 @@ const Story = () =>  {
             setChoices([]);  // No more choices, story has ended
             setIsStoryEnded(true);
             setCurrentIndex(newSegmentHistory.length - 1);
+            setIsBackTracking(false); // Reset back tracking after ending story
             fetchBackgroundImageUrl(genre);
+            
         } catch (error) {
             console.error('Error ending story:', error.response?.data || error.message || error);
         }
@@ -131,19 +151,34 @@ const Story = () =>  {
         
         try {
             const response = await axios.post('/api/save-story', { userId, story: segmentHistory.join('\n\n') });
-            console.log('Story saved:', response.data);
+            // console.log('Story saved:', response.data);
             setShowFullStory(true);
         } catch (error) {
             console.error('Error saving story:', error.response?.data || error.message || error);
         }
     };
-
+    
     const handleBack = () => {
         if (currentIndex > 0) {
-            setCurrentIndex(currentIndex - 1);
-            setCurrentSegment(segmentHistory[currentIndex - 1]);
-            setChoices(choicesHistory[currentIndex - 1]);// Retrieve previous segment and choices
-            setIsStoryEnded(false);
+          const newSegmentHistory = [...segmentHistory];
+          const newChoicesHistory = [...choicesHistory];
+
+          const previousSegment = segmentHistory[currentIndex - 1];
+          const previousChoices = choicesHistory[currentIndex - 1];
+
+          newSegmentHistory[currentIndex -1] = previousSegment;
+          newChoicesHistory[currentIndex -1] = previousChoices;
+
+          newSegmentHistory.pop();
+          newChoicesHistory.pop();
+
+          setSegmentHistory(newSegmentHistory);
+          setChoicesHistory(newChoicesHistory);
+          setCurrentSegment(previousSegment);
+          setChoices(previousChoices);// Retrieve previous segment and choices
+          setCurrentIndex(currentIndex - 1);
+          setIsStoryEnded(false);
+          // setIsBackTracking(true); // Set back tracking mode
         }
     }
 
