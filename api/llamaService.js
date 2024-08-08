@@ -4,12 +4,12 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const llamaApiKey = process.env.LLAMA_API_KEY;
-const llamaBaseUrl = 'https://api.llama-api.com/chat/completions';  // Updated URL
-// console.log(`Llama API Key: ${llamaApiKey}`);
+const llamaBaseUrl = 'https://api.llama-api.com/chat/completions'; 
+
 export const generateStorySegment = async (genre) => {
   try {
     const response = await axios.post(llamaBaseUrl, {
-      model: "llama-13b-chat",  // Example model name, update if needed
+      model: "llama-13b-chat",  
       messages: [
         { role: "system", content: "As story generator and narrator only include the story title in the beggining with out any other nonrelated phrases." },
         { role: "user", content: `Generate the first detailed segment of a ${genre} story with a maximum of 5 lines for children under 10 years old. Provide 2 choices for the next story segment path, and enumerate the choices.` }
@@ -22,8 +22,6 @@ export const generateStorySegment = async (genre) => {
       },
     });
     const segment = response.data.choices[0].message.content;
-    // console.log("Api response Content:", segment);
-    // return response.data.choices[0].message.content;  // Update this based on API response format
     return segment; 
   } catch (error) {
     console.error("Error generating story segment:", error);  
@@ -34,7 +32,7 @@ export const generateStorySegment = async (genre) => {
 export const continueStorySegment = async (choice) => {
   try {
     const response = await axios.post(llamaBaseUrl, {
-      model: "llama-13b-chat",  // Example model name, update if needed
+      model: "llama-13b-chat",  
       messages: [
         { role: "system", content: "Assistant is a large language model trained by OpenAI." },
         { role: "user", content: `Continue the story with the choice: ${choice} story with a maximum of 5 lines for children under 10 years old. Provide 2 choices for the next story segment path, and enumerate the choices.` }
@@ -47,9 +45,8 @@ export const continueStorySegment = async (choice) => {
       },
     });
     const segment = response.data.choices[0].message.content;
-    console.log("API Response Content:", segment); // Log the content to verify
+    // console.log("API Response Content:", segment); 
     return segment;
-    // return response.data.choices[0].message.content;  // Update this based on API response format
   } catch (error) {
     console.error("Error continuing story segment:", error);  
     throw new Error(error.response ? error.response.data : error.message);
@@ -73,7 +70,7 @@ export const generateFinalStorySegment = async (story) => {
       });
 
       const segment = response.data.choices[0].message.content;
-      console.log("API Response Content:", segment);
+      // console.log("API Response Content:", segment);
       return segment;
   } catch (error) {
       console.error("Error generating final story segment:", error);
