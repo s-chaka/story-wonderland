@@ -1,9 +1,7 @@
 import { useSelector } from "react-redux"
 import Story from "../components/Story";
-import SavedStories from "../components/SavedStories";
 import { useDispatch } from "react-redux";
 import { Link , useNavigate} from "react-router-dom";
-import { signOut } from "../redux/user/userSlice";
 import { useRef, useState, useEffect } from "react";
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage';
 import { app } from '../firebase';
@@ -32,15 +30,6 @@ const Profile= ()=> {
 
   const toggleProfileDetails = () => {
     setShowProfileDetails(!showProfileDetails);
-  };
-  
-  const handleSignOut = async () => {
-    try {
-      await fetch('/api/auth/signout');
-      dispatch(signOut())
-    } catch (error) {
-      console.log(error);
-    }
   };
   
   useEffect(() => {
@@ -121,9 +110,6 @@ const Profile= ()=> {
 
   return (
     <div className="p-3 max-w-7xl mx-auto">
-      <div className="absolute top-10 right-10 p-3"> 
-        <span onClick={handleSignOut} className="text-blue-700 cursor-pointer"> Sign Out</span> 
-      </div>
       <h1 className='text-3xl font-semibold text-center my-7'> Hello this is {currentUser.username}'s Dashboard</h1>
       <div className="flex">
         <div className="w-1/4 p-3">
