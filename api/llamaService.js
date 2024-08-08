@@ -59,7 +59,7 @@ export const generateFinalStorySegment = async (story) => {
           model: "llama-13b-chat",
           messages: [
               { role: "system", content: "Assistant is a large language model trained by OpenAI." },
-              { role: "user", content: `End the following story with a satisfying conclusion: ${story} without giving choises` }
+              { role: "user", content: `End the following story with a satisfying conclusion: ${story} without giving choises with a maximum of 5 lines` }
           ],
           max_tokens: 500,
       }, {
