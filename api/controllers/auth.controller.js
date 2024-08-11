@@ -26,10 +26,11 @@ export const signin = async (req, res, next) => {
     if (!validUser) return next(errorHandler(404, 'User not found!'));
     const validPassword = bcryptjs.compareSync(password, validUser.password);
     if (!validPassword) return next(errorHandler(401, 'Incorrect username/password'));
-    const token = jwt.sign({ id: validUser._id }, process.env.JWT_SECRET_KEY);
+    const token = jwt.sign({ id: validUser._id }, process.env.JWT_SECRET_KEY, { expiresIn: '1h' });
     const { password: pass, ...userInfo } = validUser._doc;
+    const expiryDate = new Date(Date.now() + 3600000); // 1 hour
     // res.cookie('access_token', token, { httpOnly: true})
-    res.cookie('access_token', token, { httpOnly: true, secure: process.env.NODE_ENV === 'production', sameSite: 'lax' })
+    res.cookie('access_token', token, { httpOnly: true, expires:expiryDate, secure: process.env.NODE_ENV === 'production', sameSite: 'lax' })
       .status(200)
       .json(userInfo);
   } catch (error) {
@@ -51,10 +52,9 @@ export const google= async (req, res, next) => {
         .status(200)
         .json(userInfo);
     } else {
+      //this function generates a random password for the user and hashes it before saving it to the database 
       const generatedPassword = Math.random().toString(36).slice(-8) + Math.random().toString(36).slice(-8);
       const hashedPassword = bcryptjs.hashSync(generatedPassword, 10);
-      // const newUser = new User({ username: req.body.name.split(" ").join("").toLowerCase()+ Math.floor(Math.random() * 10000).toString(), email:req.body.email, password: hashedPassword, profilePic: req.body.photo
-      // });
       const newUser = new User({ 
         username: req.body.name.split(" ").join("").toLowerCase().toString(), 
         email:req.body.email, 
@@ -65,7 +65,6 @@ export const google= async (req, res, next) => {
       const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET_KEY, { expiresIn: '1h' });
       const { password: hashedPassword2, ...userInfo} = newUser._doc;
       const expiryDate = new Date(Date.now() + 3600000);//1 hour
-      // res.cookie('access_token', token, { httpOnly: true, expires: expiryDate }).status(200).json(userInfo);
       res.cookie('access_token', token, { httpOnly: true, expires: expiryDate, secure: process.env.NODE_ENV === 'production', sameSite: 'lax' })
         .status(200)
         .json(userInfo);

@@ -2,8 +2,6 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { ref, listAll, getDownloadURL } from "firebase/storage";
 import {storage} from '../firebase.js';  
-import { set } from 'mongoose';
-
 
 const Story = () =>  {
     const [genre, setGenre] = useState('');
@@ -77,9 +75,6 @@ const Story = () =>  {
         try {
             const response = await axios.post('/api/continue-story', { choice });
             const { segment, choices } = response.data;
-            
-            // const newSegmentHistory = [...segmentHistory, segment];
-            // const newChoicesHistory = [...choicesHistory, choices];
 
             let newSegmentHistory = [...segmentHistory];
             let newChoicesHistory = [...choicesHistory];
@@ -98,8 +93,6 @@ const Story = () =>  {
             setChoicesHistory(newChoicesHistory);
             setCurrentSegment(segment);
             setChoices(choices);
-            // setCurrentIndex(newSegmentHistory.length - 1);
-            // setIsBackTracking(false); // Reset back tracking after new choice
             fetchBackgroundImageUrl(genre); // Fetch a background image
 
         } catch (error) {
@@ -151,13 +144,13 @@ const Story = () =>  {
         
         try {
             const response = await axios.post('/api/save-story', { userId, story: segmentHistory.join('\n\n') });
-            // console.log('Story saved:', response.data);
+            console.log('Story saved:', response.data);
             setShowFullStory(true);
         } catch (error) {
             console.error('Error saving story:', error.response?.data || error.message || error);
         }
     };
-    
+
     const handleBack = () => {
         if (currentIndex > 0) {
           const newSegmentHistory = [...segmentHistory];
@@ -178,10 +171,11 @@ const Story = () =>  {
           setChoices(previousChoices);// Retrieve previous segment and choices
           setCurrentIndex(currentIndex - 1);
           setIsStoryEnded(false);
-          // setIsBackTracking(true); // Set back tracking mode
         }
     }
-
+    const handleNoPath = () => {
+        generateStory();
+    }
     return (
     <div className="relative">
       <div 
@@ -190,7 +184,7 @@ const Story = () =>  {
             backgroundImage: `url(${backgroundImageUrl})`,
             // backgroundAttachment: 'fixed'
         }}
-      />
+      > </div>
 
       <div className='p-6 max-w-lg mx-auto bg-white rounded-xl shadow-md space-y-4 relative z-10'>
         {!showFullStory && (
@@ -206,6 +200,17 @@ const Story = () =>  {
               <option value="sci-fi">Sci-Fi</option>
               <option value="mystery">Mystery</option>
               <option value="family">Family</option>
+              {/* <option value="Animal Tales">Animal Tales</option>
+              <option value="Bedtime Tales">Bedtime Tales</option>
+              <option value="Fairy Tales">Fairy Tales</option>
+              <option value="Family">Family</option>
+              <option value="Fantasy">Fantasy</option>
+              <option value="Mystery">Mystery</option>
+              <option value="Pirate Adventures">Pirate Adventures</option>
+              <option value="Sci-fi">Sci-fi</option>
+              <option value="Space Adventures">Space Adventures</option>
+              <option value="Supre Heros">Supre Heros</option>
+              <option value="Holiday Stories">Holiday Stories</option> */}
             </select>
             <button 
               onClick={generateStory} 
@@ -224,7 +229,13 @@ const Story = () =>  {
             {choices.map((choice, index) => (
               <button 
                 key={index} 
-                onClick={() => continueStory(choice)} 
+                onClick={() => {
+                  if (choice.startsWith('Oops')) {
+                    handleNoPath(); // Handle no path available
+                  }else {
+                    continueStory(choice);
+                  } 
+                }}
                 className='w-full p-2 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-300'
               >
                 {choice}

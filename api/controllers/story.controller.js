@@ -17,7 +17,8 @@ const extractChoices = (segment) => {
     // Ensure we have exactly two choices
     // return choices.length === 2 ? choices : ["Choice 1 not found", "Choice 2 not found"];
     while (choices.length < 2) {
-        choices.push(`Choice ${choices.length + 1} not found`);
+        // choices.push(`Choice ${choices.length + 1} not found`);
+        choices.push(`Oops, no path available. You can end the story or click here to start a new one.`);
       }
       
       return choices.slice(0, 2);

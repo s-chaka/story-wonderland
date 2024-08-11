@@ -34,6 +34,7 @@ export const continueStorySegment = async (choice) => {
     const response = await axios.post(llamaBaseUrl, {
       model: "llama-13b-chat",  
       messages: [
+        // { role: "system", content: "You are a story generator and Generate the next part of the story, starting immediately after the last line, without adding any additional introductory or system-generated text like 'Let's continue the story!' or similar." },
         { role: "system", content: "Assistant is a large language model trained by OpenAI." },
         { role: "user", content: `Continue the story with the choice: ${choice} story with a maximum of 5 lines for children under 10 years old. Provide 2 choices for the next story segment path, and enumerate the choices.` }
       ],
