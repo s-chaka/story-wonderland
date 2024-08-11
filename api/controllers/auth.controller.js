@@ -3,7 +3,6 @@ import bcryptjs from "bcryptjs";
 import { errorHandler } from "../utils/error.js";
 import jwt from "jsonwebtoken";
 
-
 // signup api route
 export const signup = async (req, res, next) => {
   const { username, email, password } = req.body;
@@ -17,7 +16,6 @@ export const signup = async (req, res, next) => {
   }  
 };
 
-
 // signin api route
 export const signin = async (req, res, next) => {
   const { email, password } = req.body;
@@ -28,8 +26,7 @@ export const signin = async (req, res, next) => {
     if (!validPassword) return next(errorHandler(401, 'Incorrect username/password'));
     const token = jwt.sign({ id: validUser._id }, process.env.JWT_SECRET_KEY, { expiresIn: '1h' });
     const { password: pass, ...userInfo } = validUser._doc;
-    const expiryDate = new Date(Date.now() + 3600000); // 1 hour
-    // res.cookie('access_token', token, { httpOnly: true})
+    const expiryDate = new Date(Date.now() + 3600000); 
     res.cookie('access_token', token, { httpOnly: true, expires:expiryDate, secure: process.env.NODE_ENV === 'production', sameSite: 'lax' })
       .status(200)
       .json(userInfo);
@@ -37,7 +34,6 @@ export const signin = async (req, res, next) => {
     next(error);
   }
 };
-
 
 // google signin api route
 export const google= async (req, res, next) => {
@@ -47,7 +43,6 @@ export const google= async (req, res, next) => {
       const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET_KEY,{ expiresIn: '1h' });
       const { password: hashedPassword, ...userInfo} = user._doc;
       const expiryDate = new Date(Date.now() + 3600000);
-      // res.cookie('access_token', token, { httpOnly: true, expires: expiryDate }).status(200).json(userInfo);
       res.cookie('access_token', token, { httpOnly: true, expires: expiryDate, secure: process.env.NODE_ENV === 'production', sameSite: 'lax' })
         .status(200)
         .json(userInfo);
@@ -89,7 +84,6 @@ export const signout = async (req, res, next) => {
 export const getUserId = async (req, res) => {
     try {
         const token = req.cookies.access_token; // Retrieve token from cookies
-        // console.log('Token:', token); // Debug log
 
         if (!token) {
           console.error('Token not found.');

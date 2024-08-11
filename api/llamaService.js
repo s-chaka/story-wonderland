@@ -46,7 +46,6 @@ export const continueStorySegment = async (choice) => {
       },
     });
     const segment = response.data.choices[0].message.content;
-    // console.log("API Response Content:", segment); 
     return segment;
   } catch (error) {
     console.error("Error continuing story segment:", error);  
@@ -71,7 +70,6 @@ export const generateFinalStorySegment = async (story) => {
       });
 
       const segment = response.data.choices[0].message.content;
-      // console.log("API Response Content:", segment);
       return segment;
   } catch (error) {
       console.error("Error generating final story segment:", error);
