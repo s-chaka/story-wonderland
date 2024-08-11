@@ -231,7 +231,7 @@ const Story = () =>  {
                 key={index} 
                 onClick={() => {
                   if (choice.startsWith('Oops')) {
-                    handleNoPath(); // Handle no path available
+                    handleNoPath(); 
                   }else {
                     continueStory(choice);
                   } 
