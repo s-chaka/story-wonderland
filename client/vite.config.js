@@ -16,8 +16,9 @@ export default defineConfig({
     // jest config here
     // reporters: ['verbose'],
     environment: 'jsdom',
-    // globals: true,
-    setupFiles: ['./vitest.setup.js'],
+    globals: true,
+    // setupFiles: ['./vitest.setup.js'],
+    setupFiles: './vitest.setup.js',
     coverage: {
       exclude: [...configDefaults.coverage.exclude, 'src/main.jsx'],
     },
