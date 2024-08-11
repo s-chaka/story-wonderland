@@ -60,6 +60,7 @@ const SavedStories = () => {
     useEffect(() => {
         const loadStories = async () => {
             const userId = await fetchUserId();
+            console.log('user Id ****************',userId);
             if (userId) {
                 fetchSavedStories(userId);
             }

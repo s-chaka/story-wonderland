@@ -3,6 +3,7 @@ import { render } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { store, persistor } from './redux/store';
+import { BrowserRouter as Router } from 'react-router-dom';
 
 const renderWithProviders = (ui, { ...renderOptions } = {}) => {
   return render(
