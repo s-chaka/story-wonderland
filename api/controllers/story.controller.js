@@ -1,35 +1,30 @@
 import { Story } from "../models/storySegment.js";
 import { continueStorySegment, generateFinalStorySegment, generateStorySegment } from "../llamaService.js";
 
+
+// Helper function to Extract choices from a story segment
 const extractChoices = (segment) => {
-    // const choiceRegex = /(\d+)\.\s\*\*(.*?)\*\*:/g;
     const choiceRegex = /(?:\d+\.\s\*\*|\d+\.\s|\b[A-D]\)\s\*\*|\b[A-D]\)\s)(.*?)(?=\n|$)/g;
     let match;
     const choices = [];
-    
-    // while ((match = choiceRegex.exec(segment)) !== null) {
-    //   choices.push(match[2]); // Extracting the choice text
-    // }
+  
     while ((match = choiceRegex.exec(segment)) !== null) {
         choices.push(match[1].trim()); // Extracting the choice text
       }
-  
-    // Ensure we have exactly two choices
-    // return choices.length === 2 ? choices : ["Choice 1 not found", "Choice 2 not found"];
+
     while (choices.length < 2) {
-        choices.push(`Choice ${choices.length + 1} not found`);
-      }
-      
+        choices.push(`Oops! 🙊No path found🫨. Start a new adventure!🌟🚀`);
+      } 
+    console.log("Choices:", choices);  // Log choices     
       return choices.slice(0, 2);
 };
 
-export const createFirstSegment= async (req, res) => {
+// generate the first story segment
+  export const createFirstSegment= async (req, res) => {
     const { genre } = req.body;
     try {
       const segment = await generateStorySegment(genre);
-
       const choices = extractChoices(segment);
-
     res.json({
         segment,
         choices
@@ -39,8 +34,9 @@ export const createFirstSegment= async (req, res) => {
       res.status(500).json({ error: error.response ? error.response.data : error.message });
     }
   };
-  
-export const createNextSegment= async (req, res) => {
+
+  // continue the story
+  export const createNextSegment= async (req, res) => {
     const { choice } = req.body;
     try {
         const segment = await continueStorySegment(choice);
@@ -57,6 +53,7 @@ export const createNextSegment= async (req, res) => {
     }
   };
 
+  // end the story
   export const endStorySegment = async (req, res) => {
     const { story } = req.body;
     try {
@@ -71,6 +68,20 @@ export const createNextSegment= async (req, res) => {
     }
   };
 
+  // Helper Function to clean story segments
+  const cleanStorySegment = (segment) => {
+  console.log("Original Segment:", segment);  // Log original segment
+  const cleaned = segment
+      .replace(/(?:\d+\.\s\*\*|\d+\.\s|\b[A-D]\)\s\*\*|\b[A-D]\)\s)(.*?)(?=\n|$)/g, '')
+      .replace(/Do you want to:.*$/gm, '')
+      .replace(/[^\w\s.,'"\n-]/g, '')
+      .replace(/\d+\.\s+.*?$/gm, '')
+      .replace(/\n{2,}/g, '\n\n')
+      .trim();
+  console.log("Cleaned Segment:", cleaned);  // Log cleaned segment
+  return cleaned;
+};
+
 // save story segment to the database
   export const saveStory = async (req, res) => {
     const { userId, story } = req.body;
@@ -79,15 +90,18 @@ export const createNextSegment= async (req, res) => {
       return res.status(400).json({ error: "All fields are required" });
     }
     try {
-      const newStory = new Story({ userId, story });
+      const cleanedStory = cleanStorySegment(story);
+      const newStory = new Story({ userId, story: cleanedStory });
         await newStory.save();
         res.status(201).json({ message: "Story saved successfully!" });
+        console.log("FULL SAVED-STORY#####:", newStory)
     } catch (error) {
       console.error("Error saving story:", error.message);
       res.status(500).json({ error: error.message });
     }
   };
 
+  // get saved stories from the database
   export const getSavedStories = async (req, res) => {
     const { userId } = req.params;
     try {
@@ -98,3 +112,5 @@ export const createNextSegment= async (req, res) => {
       res.status(500).json({ error: error.message });
     }
   };
+
+
