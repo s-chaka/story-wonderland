@@ -176,6 +176,9 @@ const Story = () =>  {
     const handleNoPath = () => {
         generateStory();
     }
+    const handleNoPath = () => {
+        generateStory();
+    }
     return (
     <div className="relative">
       <div 
@@ -211,6 +214,17 @@ const Story = () =>  {
               <option value="Space Adventures">Space Adventures</option>
               <option value="Supre Heros">Supre Heros</option>
               <option value="Holiday Stories">Holiday Stories</option> */}
+              {/* <option value="Animal Tales">Animal Tales</option>
+              <option value="Bedtime Tales">Bedtime Tales</option>
+              <option value="Fairy Tales">Fairy Tales</option>
+              <option value="Family">Family</option>
+              <option value="Fantasy">Fantasy</option>
+              <option value="Mystery">Mystery</option>
+              <option value="Pirate Adventures">Pirate Adventures</option>
+              <option value="Sci-fi">Sci-fi</option>
+              <option value="Space Adventures">Space Adventures</option>
+              <option value="Supre Heros">Supre Heros</option>
+              <option value="Holiday Stories">Holiday Stories</option> */}
             </select>
             <button 
               onClick={generateStory} 
@@ -231,7 +245,7 @@ const Story = () =>  {
                 key={index} 
                 onClick={() => {
                   if (choice.startsWith('Oops')) {
-                    handleNoPath(); // Handle no path available
+                    handleNoPath(); 
                   }else {
                     continueStory(choice);
                   } 

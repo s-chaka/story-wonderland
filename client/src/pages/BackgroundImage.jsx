@@ -4,7 +4,7 @@ export default function BackgroundImage() {
   return (
     <div 
       className="fixed inset-0 w-full h-full bg-cover bg-center"
-      style={{ backgroundImage: `url('https://wallpapers.com/images/hd/kids-imagination-art-hy7atw23yvhkg9q9.jpg')`,
+      style={{ backgroundImage: `url('https://as1.ftcdn.net/v2/jpg/05/59/41/06/1000_F_559410619_rTxEg7rWHEmJrx27rT2F9cU0KEAdAd2F.jpg')`,
                 height: '100vh',
                 width: '100vw',
                 position: 'absolute',

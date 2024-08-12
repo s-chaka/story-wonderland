@@ -38,7 +38,7 @@ const SignIn= () => {
         return;
       }
       dispatch(signInSuccess(data));
-      navigate('/profile')
+      navigate('/dashboard');
     } catch (error) {
       dispatch(signInFailure(error));
     }
