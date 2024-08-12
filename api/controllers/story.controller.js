@@ -13,9 +13,10 @@ const extractChoices = (segment) => {
       }
 
     while (choices.length < 2) {
-        choices.push(`Oops! 🙊No path found🫨. Start a new adventure!🌟🚀`);
+        choices.push(`Oops! 🙊No path found🫨. You can end the story or click here to start a new adventure!🌟🚀.`);
+        // choices.push(`Oops, no path available. You can end the story or click here to start a new one.`);
       } 
-    console.log("Choices:", choices);  // Log choices     
+    console.log("Choices:", choices);   
       return choices.slice(0, 2);
 };
 
@@ -70,7 +71,7 @@ const extractChoices = (segment) => {
 
   // Helper Function to clean story segments
   const cleanStorySegment = (segment) => {
-  console.log("Original Segment:", segment);  // Log original segment
+  console.log("Original Segment:", segment);  
   const cleaned = segment
       .replace(/(?:\d+\.\s\*\*|\d+\.\s|\b[A-D]\)\s\*\*|\b[A-D]\)\s)(.*?)(?=\n|$)/g, '')
       .replace(/Do you want to:.*$/gm, '')
@@ -78,7 +79,7 @@ const extractChoices = (segment) => {
       .replace(/\d+\.\s+.*?$/gm, '')
       .replace(/\n{2,}/g, '\n\n')
       .trim();
-  console.log("Cleaned Segment:", cleaned);  // Log cleaned segment
+  console.log("Cleaned Segment:", cleaned);  
   return cleaned;
 };
 
@@ -94,7 +95,6 @@ const extractChoices = (segment) => {
       const newStory = new Story({ userId, story: cleanedStory });
         await newStory.save();
         res.status(201).json({ message: "Story saved successfully!" });
-        console.log("FULL SAVED-STORY#####:", newStory)
     } catch (error) {
       console.error("Error saving story:", error.message);
       res.status(500).json({ error: error.message });
