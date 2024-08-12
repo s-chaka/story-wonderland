@@ -45,7 +45,8 @@ const SavedStories = () => {
             const response = await fetch(`/api/saved-stories/${userId}`);
             if (!response.ok) {
                 if (response.status === 401) {
-                    handleSignOut();
+                    // handleSignOut();
+                    dispatch(signOut());
                 }
                 throw new Error('Network response was not ok');
             }
@@ -62,7 +63,7 @@ const SavedStories = () => {
             const userId = await fetchUserId();
             console.log('user Id ****************',userId);
             if (userId) {
-                fetchSavedStories(userId);
+                await fetchSavedStories(userId);
             }
         };
         loadStories();
