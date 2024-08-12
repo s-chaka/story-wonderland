@@ -176,9 +176,7 @@ const Story = () =>  {
     const handleNoPath = () => {
         generateStory();
     }
-    const handleNoPath = () => {
-        generateStory();
-    }
+
     return (
     <div className="relative">
       <div 
@@ -199,32 +197,17 @@ const Story = () =>  {
               className='block w-full p-2 border border-gray-300 rounded-md'
             >
               <option value="">Select Genre</option>
-              <option value="fantasy">Fantasy</option>
-              <option value="sci-fi">Sci-Fi</option>
-              <option value="mystery">Mystery</option>
-              <option value="family">Family</option>
-              {/* <option value="Animal Tales">Animal Tales</option>
-              <option value="Bedtime Tales">Bedtime Tales</option>
+              <option value="Animal Stories">Animal Stories</option>
+              <option value="Bedtime Stories">Bedtime Stories</option>
               <option value="Fairy Tales">Fairy Tales</option>
               <option value="Family">Family</option>
+              <option value="Friendship">Friendship</option>
               <option value="Fantasy">Fantasy</option>
+              <option value="Holiday">Holiday</option>
               <option value="Mystery">Mystery</option>
               <option value="Pirate Adventures">Pirate Adventures</option>
-              <option value="Sci-fi">Sci-fi</option>
               <option value="Space Adventures">Space Adventures</option>
-              <option value="Supre Heros">Supre Heros</option>
-              <option value="Holiday Stories">Holiday Stories</option> */}
-              {/* <option value="Animal Tales">Animal Tales</option>
-              <option value="Bedtime Tales">Bedtime Tales</option>
-              <option value="Fairy Tales">Fairy Tales</option>
-              <option value="Family">Family</option>
-              <option value="Fantasy">Fantasy</option>
-              <option value="Mystery">Mystery</option>
-              <option value="Pirate Adventures">Pirate Adventures</option>
-              <option value="Sci-fi">Sci-fi</option>
-              <option value="Space Adventures">Space Adventures</option>
-              <option value="Supre Heros">Supre Heros</option>
-              <option value="Holiday Stories">Holiday Stories</option> */}
+              <option value="Superheroes">Superheroes</option>
             </select>
             <button 
               onClick={generateStory} 
