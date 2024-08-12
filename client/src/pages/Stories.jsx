@@ -6,7 +6,7 @@ const Stories= ()=> {
     const navigate = useNavigate();
 
     const handleBackClick = () => {
-        navigate('/profile');
+        navigate('/dashboard');
     }
     return (
         <div className=" p-4">

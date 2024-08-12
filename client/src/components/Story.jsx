@@ -1,9 +1,7 @@
-// import React from 'react';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { ref, listAll, getDownloadURL } from "firebase/storage";
 import {storage} from '../firebase.js';  
-
 
 const Story = () =>  {
     const [genre, setGenre] = useState('');
@@ -16,6 +14,7 @@ const Story = () =>  {
     const [currentIndex, setCurrentIndex] = useState(-1);
     const [showFullStory, setShowFullStory] = useState(false);
     const [backgroundImageUrl, setBackgroundImageUrl] = useState('');
+    const [isBackTracking, setIsBackTracking] = useState(false);
 
     // Function to handle genre change
     const handleGenreChange = (e) => setGenre(e.target.value);
@@ -63,6 +62,7 @@ const Story = () =>  {
             setChoices(choices);
             setCurrentIndex(0);
             setIsStoryEnded(false);
+            setIsBackTracking(false);
             fetchBackgroundImageUrl(genre);
 
         } catch (error) {
@@ -75,15 +75,24 @@ const Story = () =>  {
         try {
             const response = await axios.post('/api/continue-story', { choice });
             const { segment, choices } = response.data;
-            
-            console.log('Continued Segment:', segment); 
-            const newSegmentHistory = [...segmentHistory, segment];
-            const newChoicesHistory = [...choicesHistory, choices];
+
+            let newSegmentHistory = [...segmentHistory];
+            let newChoicesHistory = [...choicesHistory];
+
+            if (isBackTracking) {
+              newSegmentHistory[currentIndex] = segment;
+              newChoicesHistory[currentIndex] = choices;
+              setIsBackTracking(false); // Reset back tracking after new choice
+            }else {
+              newSegmentHistory = [...newSegmentHistory.slice(0,currentIndex +1), segment];
+              newChoicesHistory = [...newChoicesHistory.slice(0,currentIndex +1), choices];
+              setCurrentIndex(newSegmentHistory.length - 1);
+            }
+
             setSegmentHistory(newSegmentHistory);
             setChoicesHistory(newChoicesHistory);
             setCurrentSegment(segment);
             setChoices(choices);
-            setCurrentIndex(newSegmentHistory.length - 1);
             fetchBackgroundImageUrl(genre); // Fetch a background image
 
         } catch (error) {
@@ -97,15 +106,17 @@ const Story = () =>  {
             const response = await axios.post('/api/end-story', { story: currentSegment });
             const { segment } = response.data;
 
-            console.log('End Segment:', segment); 
             const newSegmentHistory = [...segmentHistory, segment];
+
             setSegmentHistory(newSegmentHistory);
             setChoicesHistory([...choicesHistory,[]]);
             setCurrentSegment(segment);
             setChoices([]);  // No more choices, story has ended
             setIsStoryEnded(true);
             setCurrentIndex(newSegmentHistory.length - 1);
+            setIsBackTracking(false); // Reset back tracking after ending story
             fetchBackgroundImageUrl(genre);
+            
         } catch (error) {
             console.error('Error ending story:', error.response?.data || error.message || error);
         }
@@ -114,7 +125,6 @@ const Story = () =>  {
     const fetchUserId = async () => {
         try {
             const response = await axios.get('/api/auth/get-user-id',{
-                // headers: { 'Authorization': `Bearer ${access_token}` }, // Replace `yourToken` with the actual token
                 withCredentials: true});
             setUserId(response.data.userId);
         } catch (error) {
@@ -143,13 +153,29 @@ const Story = () =>  {
 
     const handleBack = () => {
         if (currentIndex > 0) {
-            setCurrentIndex(currentIndex - 1);
-            setCurrentSegment(segmentHistory[currentIndex - 1]);
-            setChoices(choicesHistory[currentIndex - 1]);// Retrieve previous segment and choices
-            setIsStoryEnded(false);
+          const newSegmentHistory = [...segmentHistory];
+          const newChoicesHistory = [...choicesHistory];
+
+          const previousSegment = segmentHistory[currentIndex - 1];
+          const previousChoices = choicesHistory[currentIndex - 1];
+
+          newSegmentHistory[currentIndex -1] = previousSegment;
+          newChoicesHistory[currentIndex -1] = previousChoices;
+
+          newSegmentHistory.pop();
+          newChoicesHistory.pop();
+
+          setSegmentHistory(newSegmentHistory);
+          setChoicesHistory(newChoicesHistory);
+          setCurrentSegment(previousSegment);
+          setChoices(previousChoices);// Retrieve previous segment and choices
+          setCurrentIndex(currentIndex - 1);
+          setIsStoryEnded(false);
         }
     }
-
+    const handleNoPath = () => {
+        generateStory();
+    }
     return (
     <div className="relative">
       <div 
@@ -158,7 +184,7 @@ const Story = () =>  {
             backgroundImage: `url(${backgroundImageUrl})`,
             // backgroundAttachment: 'fixed'
         }}
-      />
+      > </div>
 
       <div className='p-6 max-w-lg mx-auto bg-white rounded-xl shadow-md space-y-4 relative z-10'>
         {!showFullStory && (
@@ -174,6 +200,17 @@ const Story = () =>  {
               <option value="sci-fi">Sci-Fi</option>
               <option value="mystery">Mystery</option>
               <option value="family">Family</option>
+              {/* <option value="Animal Tales">Animal Tales</option>
+              <option value="Bedtime Tales">Bedtime Tales</option>
+              <option value="Fairy Tales">Fairy Tales</option>
+              <option value="Family">Family</option>
+              <option value="Fantasy">Fantasy</option>
+              <option value="Mystery">Mystery</option>
+              <option value="Pirate Adventures">Pirate Adventures</option>
+              <option value="Sci-fi">Sci-fi</option>
+              <option value="Space Adventures">Space Adventures</option>
+              <option value="Supre Heros">Supre Heros</option>
+              <option value="Holiday Stories">Holiday Stories</option> */}
             </select>
             <button 
               onClick={generateStory} 
@@ -192,7 +229,13 @@ const Story = () =>  {
             {choices.map((choice, index) => (
               <button 
                 key={index} 
-                onClick={() => continueStory(choice)} 
+                onClick={() => {
+                  if (choice.startsWith('Oops')) {
+                    handleNoPath(); 
+                  }else {
+                    continueStory(choice);
+                  } 
+                }}
                 className='w-full p-2 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-300'
               >
                 {choice}
