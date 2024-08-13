@@ -26,7 +26,7 @@ describe('Profile Component', () => {
 
     render(<Profile />);
 
-    expect(screen.getByText(/Hello, TestUser/i)).toBeInTheDocument();
+    expect(screen.getByText(/Hello TestUser/i)).toBeInTheDocument();
     expect(screen.getByPlaceholderText('User name').value).toBe('TestUser');
     expect(screen.getByPlaceholderText('email').value).toBe('testuser@example.com');
     expect(screen.getByRole('img')).toHaveAttribute('src', 'http://example.com/photo.jpg');
