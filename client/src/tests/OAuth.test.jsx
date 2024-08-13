@@ -65,7 +65,7 @@ describe('OAuth Component', () => {
         }),
       });
       expect(dispatchMock).toHaveBeenCalledWith(signInSuccess(mockResponse));
-      expect(navigateMock).toHaveBeenCalledWith('/');
+      expect(navigateMock).toHaveBeenCalledWith('/dashboard');
     });
   });
 

@@ -72,7 +72,7 @@ describe('SignIn Component', () => {
     await waitFor(() => {
       expect(dispatchMock).toHaveBeenCalledWith(signInStart());
       expect(dispatchMock).toHaveBeenCalledWith(signInSuccess({ success: true }));
-      expect(navigateMock).toHaveBeenCalledWith('/profile');
+      expect(navigateMock).toHaveBeenCalledWith('/dashboard');
     });
   });
 
