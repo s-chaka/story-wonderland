@@ -8,7 +8,7 @@ export default function Header() {
     <div className='bg-green-200'>
     <div className='flex justify-between items-center max-w-6xl mx-auto p-3'>
       <NavLink to='/'>
-        <h1 className='font-bold text-2xl text-purple-600 hover:text-purple-900'>Story Wonderland</h1>
+        <h1 className='font-bold text-2xl text-green-900 hover:text-green-400'>Story Wonderland</h1>
       </NavLink>
       <ul className='flex gap-4'>
         <NavLink
