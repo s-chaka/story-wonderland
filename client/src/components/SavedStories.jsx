@@ -81,13 +81,14 @@ const SavedStories = () => {
     };
     
     return (
+        <div className="min-h-screen bg-gradient-to-r from-purple-200 via-blue-200 to-red-200 bg-opacity-60 backdrop-filter backdrop-blur-lg justify-center">
         <div className='p-6 max-w-lg mx-auto bg-white rounded-xl shadow-md space-y-4'>
         <h1 className='text-2xl text-center font-semibold my-7'>Saved Stories</h1>
         {error && <p className='text-center text-red-500'>{error}</p>}
         {!selectedStory ? (
             <div>
                 {stories.length === 0 ? (
-                     <p className='text-center text-gray-500'>No saved stories found.</p>
+                    <p className='text-center text-gray-500'>No saved stories found.</p>
                 ) : (
                     <ul>
                         {stories.map((story) => (
@@ -110,6 +111,7 @@ const SavedStories = () => {
                 </button>
             </div>
         )}
+        </div>
         </div>
         );
     };

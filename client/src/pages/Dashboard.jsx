@@ -3,7 +3,8 @@ import Story from '../components/Story';
 
 const Dashboard = () => {
 
-  return (
+  return (  
+    <div className="h-screen bg-gradient-to-r from-purple-200 via-blue-200 to-red-200 bg-opacity-60 backdrop-filter backdrop-blur-lg items-center justify-center"> 
     <div className="p-3 max-w-7xl mx-auto">
       <div className="flex flex-col lg:flex-row">
         <div className="lg:w-1/4 p-3 lg:flex lg:flex-col lg:items-start lg:gap-4">
@@ -20,6 +21,7 @@ const Dashboard = () => {
           </Link>
         </div>
       </div>
+    </div>
     </div>
   );
 };

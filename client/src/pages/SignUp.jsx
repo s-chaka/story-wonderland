@@ -37,9 +37,10 @@ const SignUp=()=> {
     }
   }
   return (
+    <div className='min-h-screen bg-gradient-to-r from-purple-200 via-blue-200 to-red-200 bg-opacity-60 backdrop-filter backdrop-blur-lg justify-center'>
     <div className='p-3 max-w-lg mx-auto'>
       <h1 className='text-3xl text-center font-semibold my-7'>Sign Up</h1>
-      <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
+      <form onSubmit={handleSubmit} className='flex flex-col gap-4 bg-white p-10 rounded-lg shadow-md w-100'>
         <input type='text' placeholder='Username' id='username' className='bg-slate-100 p-3 rounded-lg'
         onChange={handleChange} />
         <input type='text' placeholder='email' id='email' className='bg-slate-100 p-3 rounded-lg'
@@ -58,6 +59,7 @@ const SignUp=()=> {
         </Link>
       </div>
         <p className='text-red-700 mt-5'>{error && 'Something went wrong!'}</p>
+      </div>
       </div>
   )
 };
