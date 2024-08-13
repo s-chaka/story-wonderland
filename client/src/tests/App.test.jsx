@@ -11,6 +11,6 @@ describe('App rendering', () => {
       app = renderWithProviders(<App />);
     });
     const elementList = app.container.querySelectorAll('div');
-    expect(elementList).toHaveLength(7);
+    expect(elementList).toHaveLength(13);
   });
 });
