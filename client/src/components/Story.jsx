@@ -93,7 +93,7 @@ const Story = () =>  {
             setChoicesHistory(newChoicesHistory);
             setCurrentSegment(segment);
             setChoices(choices);
-            fetchBackgroundImageUrl(genre); // Fetch a background image
+            fetchBackgroundImageUrl(genre); 
 
         } catch (error) {
             console.error('Error continuing story:', error.response?.data || error.message || error);

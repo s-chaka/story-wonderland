@@ -45,7 +45,6 @@ const SavedStories = () => {
             const response = await fetch(`/api/saved-stories/${userId}`);
             if (!response.ok) {
                 if (response.status === 401) {
-                    // handleSignOut();
                     dispatch(signOut());
                 }
                 throw new Error('Network response was not ok');
@@ -61,7 +60,6 @@ const SavedStories = () => {
     useEffect(() => {
         const loadStories = async () => {
             const userId = await fetchUserId();
-            console.log('user Id ****************',userId);
             if (userId) {
                 await fetchSavedStories(userId);
             }
@@ -74,7 +72,6 @@ const SavedStories = () => {
     };
 
     const getStoryTitle = (story) => {
-        // Define the delimiters more comprehensively
         const delimiters = /(\.\s+|,\s+|:\s+|\*\*\*\s+|\*\s+\*)/;
         // Find the index of the first delimiter
         const index = story.story.search(delimiters);
