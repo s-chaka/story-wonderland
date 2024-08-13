@@ -74,37 +74,6 @@ describe('Story Component', () => {
             );
         });
     });
-    // test('should save the story when "Save Story" button is clicked', async () => {
-    //     // Mock the API call for saving a story
-    //     mock.onPost('/api/save-story').reply(200, {
-    //         message: 'Story saved successfully!',
-    //     });
-    
-    //     render(<Story />);
-    
-    //     // Simulate the story generation process
-    //     fireEvent.change(screen.getByRole('combobox'), { target: { value: 'fantasy' } });
-    //     fireEvent.click(screen.getByRole('button', { name: /generate story/i }));
-    //     screen.debug();
-    //     await waitFor(() => {
-    //         expect(screen.getByText(/Once upon a time.../i)).toBeInTheDocument();
-    //       });
-    // //     await waitFor(() => {
-    // //         expect(screen.getByText((content, element) => {
-    // //             return content.includes('Once upon a time...') && element.tagName.toLowerCase() === "div";
-    // // })).toBeInTheDocument()
-    // // });
-    
-    //     // Click save story button
-    //     fireEvent.click(screen.getByRole('button', { name: /save story/i }));
-    
-    //     // Wait for the success message to appear
-    //     await waitFor(() => expect(screen.getByText('Story saved successfully!')).toBeInTheDocument());
-    
-    //     // Ensure the story is added to the saved stories list (if applicable)
-    //     // Example:
-    //     // expect(screen.getByText('Once upon a time...')).toBeInTheDocument();
-    // });
     test('should continue the story when a choice is made', async () => {
         // Mock the initial API call for generating a story
         mock.onPost('/api/generate-story').reply(200, {
@@ -135,32 +104,4 @@ describe('Story Component', () => {
         expect(screen.getByRole('button', { name: /explore further/i })).toBeInTheDocument();
         expect(screen.getByRole('button', { name: /go back/i })).toBeInTheDocument();
     });
-    // test('should end the story when "End Story" button is clicked', async () => {
-    //     // Mock the API call for ending the story
-    //     mock.onPost('/api/end-story').reply(200, {
-    //         message: 'The End. Thanks for playing!',
-    //     });
-    
-    //     render(<Story />);
-    
-    //     // Simulate the story generation process
-    //     fireEvent.change(screen.getByRole('combobox'), { target: { value: 'fantasy' } });
-    //     fireEvent.click(screen.getByRole('button', { name: /generate story/i }));
-    
-    //     // Ensure the story is generated first
-    //     await waitFor(() => {
-    //         expect(screen.getByText((content) => content.includes("Once upon a time"))).toBeInTheDocument();
-    //     });
-    
-    //     // Click end story button
-    //     fireEvent.click(screen.getByRole('button', { name: /end story/i }));
-    
-    //     // Wait for the final message to appear using a more flexible matcher
-    //     await waitFor(() => {
-    //         expect(screen.getByText((content) => content.includes('The End. Thanks for playing!'))).toBeInTheDocument();
-    //     });
-    
-    //     // Ensure that further interaction buttons are disabled (if applicable)
-    //     expect(screen.getByRole('button', { name: /generate story/i })).toBeDisabled();
-    // });
 });

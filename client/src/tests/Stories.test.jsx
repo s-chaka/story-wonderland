@@ -27,11 +27,7 @@ vi.mock('react-router-dom', async (importOriginal) => {
   
       // Check if the "Back to my dashboard" button is rendered
       expect(screen.getByText('Back to my dashboard')).toBeInTheDocument();
-  
-      // Check if the SavedStories component is rendered
-      // If SavedStories does not have text content, you may need to use another approach to verify its rendering
-      // For example, if SavedStories renders specific elements, you could check for those
-    //   expect(screen.getByTestId('Saved Stories')).toBeInTheDocument();
+      // expect(screen.getByTestId('Saved Stories')).toBeInTheDocument();
     });
   
     it('navigates to /dashboard when the back button is clicked', () => {
