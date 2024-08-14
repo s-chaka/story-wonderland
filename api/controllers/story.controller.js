@@ -8,13 +8,19 @@ const extractChoices = (segment) => {
     let match;
     const choices = [];
   
+    // while ((match = choiceRegex.exec(segment)) !== null) {
+    //     choices.push(match[1].trim()); // Extracting the choice text
+    //   }
+
     while ((match = choiceRegex.exec(segment)) !== null) {
-        choices.push(match[1].trim()); // Extracting the choice text
+      const choiceText = match[1] ? match[1].trim() : ''; // Ensure there's valid choice text
+      if (choiceText && choiceText !== 'NaN') { // Avoid adding NaN or empty values
+          choices.push(choiceText);
       }
+  }
 
     while (choices.length < 2) {
-        choices.push(`Oops! 🙊No path found🫨. You can end the story or click here to start a new adventure!🌟🚀.`);
-        // choices.push(`Oops, no path available. You can end the story or click here to start a new one.`);
+        choices.push(`Oops! 🙊No path found🫨. You can end the story or click here to start a new adventure!🌟🚀`);
       } 
     console.log("Choices:", choices);   
       return choices.slice(0, 2);
