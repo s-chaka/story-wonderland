@@ -105,7 +105,7 @@ const Profile= ()=> {
   return (
     < div className="min-h-screen bg-gradient-to-r from-purple-200 via-blue-200 to-red-200 bg-opacity-60 backdrop-filter backdrop-blur-lg flex items-center justify-center">
     <div className="flex flex-col items-center justify-center h-screen">
-      <h1 className='text-3xl text-orange-500 font-semibold text-center mb-10'>
+      <h1 className='text-3xl text-black font-semibold text-center mb-10'>
          Hello {currentUser.username}
       </h1>
           <form onSubmit={handleSubmit} className="flex flex-col gap-4 bg-white p-10 rounded-lg shadow-md w-96">
