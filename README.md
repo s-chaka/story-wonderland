@@ -1,6 +1,6 @@
 # Story Wonderland
 
-Welcome to **Story-Wonderland** repository! This web app generates fun and engaging stories based on user-selected genres, using the llama API. Designed for kids under 10 years old, the app offers a playful and interactive experience.
+Welcome to **Story-Wonderland** repository! This web app generates fun and engaging stories based on user-selected genres, using Llama API. Designed for kids under 10 years old, the app offers a playful and interactive experience.
 
 
 ## Technologies Used
@@ -25,23 +25,24 @@ Before you start, make sure you have the following installed:
 
 1. **Clone the Repository**
 
-   git clone https://github.com/s-chaka/story-wonderland-backend.git
+   git clone https://github.com/s-chaka/story-wonderland.git
    if already cloned skip cloning and cd story-wonderland
 
 2.	**Install Dependencies**
     npm install
 
 3.	**Create a .env File**
-    add and update the values according to your environment:
-    •	MONGODB_URI = Your MongoDB connection string
-	•	JWT_SECRET = Your JWT secret key
-	•	LLAMA_API_KEY: Your llama Api Key
-	•	VITE_FIREBASE_API_KEY = Your Firebase Api Key
-	•	FIREBASE_STORAGE_BUCKET: Your Firebase storage bucket URL
+4.	### API Keys
+	Add and update the values according to your environment:
+	- `MONGODB_URI = Your MongoDB connection string`
+        - `JWT_SECRET_KEY = Your JWT secret key`
+        - `LLAMA_API_KEY: Your llama Api Key`
+        - `VITE_FIREBASE_API_KEY = Your Firebase Api Key`
+        - `FIREBASE_STORAGE_BUCKET: Your Firebase storage bucket URL`
 
-4.	**Firebase Configuration**
+5.	**Firebase Configuration**
     Ensure you have set up Firebase and added your credentials in the .env file.
-5.	**Update Routes and Configuration**
+6.	**Update Routes and Configuration**
 	• Update any route configurations or middleware as needed in index.js and routes/.
 
 ## Running the Application
@@ -67,9 +68,6 @@ Before you start, make sure you have the following installed:
 	•	POST /api/end-story
 	•	POST /api/save-story
 	•	GET /api/saved-stories/:userId
-	
-	Miscellaneous Routes
-	•	GET /api/get-background-image-url
 
 ## Front-end Installation
 
