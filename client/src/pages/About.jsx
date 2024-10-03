@@ -37,6 +37,30 @@ const About = () => {
           Story-Wonderland uses the MERN stack and llama API to create personalized stories for each child. 
         We’ve made sure that our app is easy to use, so kids can focus on what matters most having fun!
       </p>
+      <h2 className='text-2xl font-bold text-center text-purple-400 mb-4 mt-8'>
+  Our Team
+</h2>
+<p className='text-lg text-gray-700'>
+  We are a team of passionate and creative developers, and you can find us on LinkedIn:  
+  <br />
+  <a 
+    href='https://www.linkedin.com/in/semhar-tes/' 
+    className='text-purple-500 hover:underline ml-1' 
+    target='_blank' 
+    rel='noopener noreferrer'
+  >
+    Semhar Tesfmariam
+  </a>
+  {' and '}
+  <a 
+    href='https://www.linkedin.com/in/selam-chaka/' 
+    className='text-purple-500 hover:underline' 
+    target='_blank' 
+    rel='noopener noreferrer'
+  >
+    Selam Chaka
+  </a>.
+</p>
     </div>
     </div>
   );
